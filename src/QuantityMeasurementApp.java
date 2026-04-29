@@ -2,28 +2,27 @@ package com.apps.quantitymeasurement;
 
 public class QuantityMeasurementApp {
 
-    public static boolean demonstrateLengthEquality(Length l1, Length l2) {
-        boolean result = l1.equals(l2);
-        System.out.println(l1 + " == " + l2 + " ? " + result);
+    public static boolean demonstrateWeightEquality(Weight w1, Weight w2) {
+        boolean result = w1.equals(w2);
+        System.out.println(w1 + " == " + w2 + " ? " + result);
         return result;
     }
 
-    public static double demonstrateLengthConversion(double value,
-                                                     LengthUnit from, LengthUnit to) {
-        double result = Length.convert(value, from, to);
-        System.out.printf("convert(%.4f %s → %s) = %.6f%n", value, from.name(), to.name(), result);
+    public static Weight demonstrateWeightConversion(Weight weight, WeightUnit targetUnit) {
+        Weight result = weight.convertTo(targetUnit);
+        System.out.println(weight + " → " + targetUnit.name() + " = " + result);
         return result;
     }
 
-    public static Length demonstrateLengthConversion(Length length, LengthUnit targetUnit) {
-        Length result = length.convertTo(targetUnit);
-        System.out.println(length + " → " + targetUnit.name() + " = " + result);
+    public static Weight demonstrateWeightAddition(Weight w1, Weight w2) {
+        Weight result = w1.add(w2);
+        System.out.println(w1 + " + " + w2 + " = " + result);
         return result;
     }
 
-    public static Length demonstrateLengthAddition(Length l1, Length l2) {
-        Length result = l1.add(l2);
-        System.out.println(l1 + " + " + l2 + " = " + result);
+    public static Weight demonstrateWeightAddition(Weight w1, Weight w2, WeightUnit targetUnit) {
+        Weight result = w1.add(w2, targetUnit);
+        System.out.println(w1 + " + " + w2 + " in " + targetUnit.name() + " = " + result);
         return result;
     }
 
@@ -34,19 +33,27 @@ public class QuantityMeasurementApp {
     }
 
     public static void main(String[] args) {
-        System.out.println("=== UC8 Refactored Demo ===");
-        demonstrateLengthEquality(
-                new Length(1.0,  LengthUnit.FEET),
-                new Length(12.0, LengthUnit.INCHES));
+        demonstrateWeightEquality(
+                new Weight(1.0,    WeightUnit.KILOGRAM),
+                new Weight(1000.0, WeightUnit.GRAM));
 
-        demonstrateLengthAddition(
-                new Length(1.0,  LengthUnit.FEET),
-                new Length(12.0, LengthUnit.INCHES),
-                LengthUnit.FEET);
+        demonstrateWeightEquality(
+                new Weight(1.0,     WeightUnit.KILOGRAM),
+                new Weight(2.20462, WeightUnit.POUND));
 
-        System.out.println(LengthUnit.FEET.convertToBaseUnit(12.0));
-        System.out.println(LengthUnit.INCHES.convertToBaseUnit(12.0));
-        System.out.println(LengthUnit.INCHES.convertFromBaseUnit(1.0));
-        System.out.println(LengthUnit.YARDS.convertFromBaseUnit(3.0));
+        demonstrateWeightConversion(
+                new Weight(1.0, WeightUnit.KILOGRAM), WeightUnit.GRAM);
+
+        demonstrateWeightConversion(
+                new Weight(2.0, WeightUnit.POUND),    WeightUnit.KILOGRAM);
+
+        demonstrateWeightAddition(
+                new Weight(1.0,    WeightUnit.KILOGRAM),
+                new Weight(1000.0, WeightUnit.GRAM));
+
+        demonstrateWeightAddition(
+                new Weight(1.0,    WeightUnit.KILOGRAM),
+                new Weight(1000.0, WeightUnit.GRAM),
+                WeightUnit.GRAM);
     }
 }
