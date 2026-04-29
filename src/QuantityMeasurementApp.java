@@ -38,8 +38,19 @@ public class QuantityMeasurementApp {
             return new QuantityLength(converted, targetUnit);
         }
 
+        public QuantityLength add(QuantityLength other) {
+            if (other == null) throw new IllegalArgumentException("Operand cannot be null");
+            double sumInBase = this.toBaseUnit() + other.toBaseUnit();
+            double resultInUnit = sumInBase / this.unit.getConversionFactor();
+            return new QuantityLength(resultInUnit, this.unit);
+        }
+
         public double getValue() {
             return value;
+        }
+
+        public LengthUnit getUnit() {
+            return unit;
         }
 
         @Override
@@ -62,34 +73,23 @@ public class QuantityMeasurementApp {
         return new QuantityLength(value, source).convertTo(target).getValue();
     }
 
-    public static void demonstrateLengthConversion(double value, LengthUnit from, LengthUnit to) {
-        double result = convert(value, from, to);
-        System.out.printf("%.4f %s = %.4f %s%n", value, from, result, to);
+    public static QuantityLength add(QuantityLength a, QuantityLength b) {
+        if (a == null || b == null) throw new IllegalArgumentException("Operands cannot be null");
+        return a.add(b);
     }
 
-    public static void demonstrateLengthConversion(QuantityLength length, LengthUnit to) {
-        QuantityLength result = length.convertTo(to);
-        System.out.printf("%s = %s%n", length, result);
-    }
-
-    public static void demonstrateLengthEquality(QuantityLength a, QuantityLength b) {
-        System.out.printf("%s == %s : %b%n", a, b, a.equals(b));
-    }
-
-    public static void demonstrateLengthComparison(double v1, LengthUnit u1, double v2, LengthUnit u2) {
-        demonstrateLengthEquality(new QuantityLength(v1, u1), new QuantityLength(v2, u2));
+    public static QuantityLength add(double v1, LengthUnit u1, double v2, LengthUnit u2) {
+        return add(new QuantityLength(v1, u1), new QuantityLength(v2, u2));
     }
 
     public static void main(String[] args) {
-        demonstrateLengthConversion(1.0, LengthUnit.FEET, LengthUnit.INCH);
-        demonstrateLengthConversion(3.0, LengthUnit.YARD, LengthUnit.FEET);
-        demonstrateLengthConversion(36.0, LengthUnit.INCH, LengthUnit.YARD);
-        demonstrateLengthConversion(1.0, LengthUnit.CENTIMETER, LengthUnit.INCH);
-        demonstrateLengthConversion(0.0, LengthUnit.FEET, LengthUnit.INCH);
-
-        QuantityLength yards = new QuantityLength(2.0, LengthUnit.YARD);
-        demonstrateLengthConversion(yards, LengthUnit.INCH);
-
-        demonstrateLengthComparison(1.0, LengthUnit.FEET, 12.0, LengthUnit.INCH);
+        System.out.println(add(1.0, LengthUnit.FEET, 2.0, LengthUnit.FEET));
+        System.out.println(add(1.0, LengthUnit.FEET, 12.0, LengthUnit.INCH));
+        System.out.println(add(12.0, LengthUnit.INCH, 1.0, LengthUnit.FEET));
+        System.out.println(add(1.0, LengthUnit.YARD, 3.0, LengthUnit.FEET));
+        System.out.println(add(36.0, LengthUnit.INCH, 1.0, LengthUnit.YARD));
+        System.out.println(add(2.54, LengthUnit.CENTIMETER, 1.0, LengthUnit.INCH));
+        System.out.println(add(5.0, LengthUnit.FEET, 0.0, LengthUnit.INCH));
+        System.out.println(add(5.0, LengthUnit.FEET, -2.0, LengthUnit.FEET));
     }
 }
