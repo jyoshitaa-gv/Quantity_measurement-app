@@ -2,7 +2,9 @@ public class QuantityMeasurementApp {
 
     enum LengthUnit {
         FEET(1.0),
-        INCH(1.0 / 12.0);
+        INCH(1.0 / 12.0),
+        YARD(3.0),
+        CENTIMETER(0.393701 / 12.0);
 
         private final double conversionFactor;
 
@@ -39,12 +41,12 @@ public class QuantityMeasurementApp {
     }
 
     public static void main(String[] args) {
-        QuantityLength q1 = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength q2 = new QuantityLength(12.0, LengthUnit.INCH);
-        System.out.println("1.0 ft == 12.0 in: " + q1.equals(q2));
+        QuantityLength q1 = new QuantityLength(1.0, LengthUnit.YARD);
+        QuantityLength q2 = new QuantityLength(3.0, LengthUnit.FEET);
+        System.out.println("1.0 yard == 3.0 feet: " + q1.equals(q2));
 
-        QuantityLength q3 = new QuantityLength(1.0, LengthUnit.INCH);
-        QuantityLength q4 = new QuantityLength(1.0, LengthUnit.INCH);
-        System.out.println("1.0 in == 1.0 in: " + q3.equals(q4));
-    }
-}
+        QuantityLength q3 = new QuantityLength(1.0, LengthUnit.YARD);
+        QuantityLength q4 = new QuantityLength(36.0, LengthUnit.INCH);
+        System.out.println("1.0 yard == 36.0 inches: " + q3.equals(q4));
+
+        QuantityLength q5 = new QuantityLength(
